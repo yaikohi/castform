@@ -5,7 +5,7 @@ use serde_json::Value;
 
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
-pub struct Response {
+pub struct LocationResponse {
     pub data: Vec<LocationCoordinates>,
 }
 
@@ -37,7 +37,7 @@ pub struct LocationCoordinates {
     pub label: Option<String>,
 }
 
-impl Response {
+impl LocationResponse {
     pub async fn get(location_query: &String, api_key: &String) -> Result<Self, ExitFailure> {
         let url = format!(
             "http://api.positionstack.com/v1/forward?access_key={}&query={}",

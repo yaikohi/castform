@@ -2,7 +2,7 @@ use dotenv::dotenv;
 use exitfailure::ExitFailure;
 use std::env;
 
-use crate::utils::get_coordinates::Response;
+use crate::utils::get_coordinates::LocationResponse;
 
 mod utils;
 
@@ -27,7 +27,7 @@ async fn main() -> Result<(), ExitFailure> {
         location_query = args[0].clone();
     }
 
-    let res = Response::get(&location_query, &api_key_positionstack).await?;
+    let res = LocationResponse::get(&location_query, &api_key_positionstack).await?;
     println!(
         "{}'s lat: {:?}, lon: {:?}",
         location_query,
