@@ -1,3 +1,5 @@
+use std::{panic::Location, vec};
+
 use exitfailure::ExitFailure;
 use reqwest::Url;
 use serde_derive::{Deserialize, Serialize};
@@ -48,5 +50,19 @@ impl LocationResponse {
         let res = reqwest::get(url).await?.json().await?;
 
         Ok(res)
+    }
+    pub async fn get_lat_lon(
+        location_query: &String,
+        api_key: &String,
+    ) -> Result<Vec<Option<f64>>, ExitFailure> {
+        let res: LocationResponse = Self::get(location_query, api_key).await?;
+        let data = &res.data[0];
+
+        let lat = data.latitude;
+        let lon = data.longitude;
+
+        let coordinates = vec![lat, lon];
+
+        Ok(coordinates)
     }
 }

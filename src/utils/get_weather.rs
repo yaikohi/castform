@@ -43,3 +43,23 @@ pub struct WeatherDetails {
     pub description: Option<String>,
     pub icon: Option<String>,
 }
+
+impl WeatherResponse {
+    pub async fn get(
+        lat: &String,
+        lon: &String,
+        time_stamp: &String,
+        api_key: &String,
+    ) -> Result<Self, ExitFailure> {
+        let url = format!(
+            "
+            http://api.openweathermap.org/data/3.0/onecall/timemachine?lat={}&lon={}&dt={}&appid={}",
+            lat, lon, time_stamp, api_key
+        );
+
+        let url = Url::parse(&*url)?;
+        let res = reqwest::get(url).await?.json().await?;
+
+        Ok(res)
+    }
+}

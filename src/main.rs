@@ -1,16 +1,20 @@
 use dotenv::dotenv;
 use exitfailure::ExitFailure;
 use std::env;
+use chrono::Utc;
 
-use crate::utils::get_coordinates::LocationResponse;
+
+use crate::utils::{get_coordinates::LocationResponse, tokens::load_token};
 
 mod utils;
 
 #[tokio::main]
 async fn main() -> Result<(), ExitFailure> {
     dotenv().ok();
-    let api_key_positionstack =
-        std::env::var("API_TOKEN_POSITIONSTACK").expect("API_TOKEN_POSITIONSTACK must be set.");
+
+    let current_time = Utc::now();
+    let api_key_positionstack = load_token(String::from("API_TOKEN_POSITIONSTACK"));
+    let api_key_openweathermap = load_token(String::from("API_TOKEN_OPENWEATHERMAP"));
 
     let args: Vec<String> = env::args().collect();
     let mut location_query: String = "Utrecht".to_string();
@@ -27,13 +31,18 @@ async fn main() -> Result<(), ExitFailure> {
         location_query = args[0].clone();
     }
 
-    let res = LocationResponse::get(&location_query, &api_key_positionstack).await?;
+    let location_response = LocationResponse::get_lat_lon(&location_query, &api_key_positionstack).await?;
     println!(
         "{}'s lat: {:?}, lon: {:?}",
         location_query,
-        res.data[0].latitude.expect("Null value"),
-        res.data[0].longitude.expect("Null value")
+        location_response[0].expect("Null value"),
+        location_response[1].expect("Null value")
     );
+
+    let lat = location_response[0];
+    let lon = location_response[1];
+
+    // let weather_response = WeatherResponse::get(&lat, &lon, &api_key_openweathermap).await?;
 
     Ok(())
 }
