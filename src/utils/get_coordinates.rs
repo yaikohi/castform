@@ -1,5 +1,4 @@
-use std::{panic::Location, vec};
-
+use std::vec;
 use exitfailure::ExitFailure;
 use reqwest::Url;
 use serde_derive::{Deserialize, Serialize};
