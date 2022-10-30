@@ -1,7 +1,7 @@
 
 # Tasks
 - [x] think of a new name that's not generic
-- [ ] learn how to split rust code into smaller modules
+- [x] learn how to split rust code into smaller modules
 - [ ] fetch weather api data with lat/lon
 - [ ] learn how to show pixelated pokemon inside of a cli
 - [ ] show castform in the style of the weather inside the CLI
@@ -11,7 +11,10 @@
 This pokemon changes shape based on the weather.
 
 # Splitting rust code into modules
-...WIP
+Sources used so far:
+1. https://doc.rust-lang.org/book/ch07-05-separating-modules-into-different-files.html
+2. https://www.youtube.com/watch?v=969j0qnJGi8
+
 
 # Weather API
 I will be using [openweathermap](https://openweathermap.org/api/) since it allows for plenty of api calls on a single day on a free-to-use basis.
