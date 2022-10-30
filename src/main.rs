@@ -41,12 +41,8 @@ async fn main() -> Result<(), ExitFailure> {
     let lat = location_response[0].expect("No lat found");
     let lon = location_response[1].expect("No lon found");
 
-    let weather_response = WeatherResponse::get(
-        &lat.to_string(),
-        &lon.to_string(),
-        &api_key_openweathermap,
-    )
-    .await?;
+    let weather_response =
+        WeatherResponse::get(&lat.to_string(), &lon.to_string(), &api_key_openweathermap).await?;
 
     let city = &weather_response.city.name;
     dbg!(city);

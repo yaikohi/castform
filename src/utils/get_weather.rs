@@ -104,13 +104,8 @@ pub struct Coord {
     pub lon: f64,
 }
 
-
 impl WeatherResponse {
-    pub async fn get(
-        lat: &String,
-        lon: &String,
-        api_key: &String,
-    ) -> Result<Self, ExitFailure> {
+    pub async fn get(lat: &String, lon: &String, api_key: &String) -> Result<Self, ExitFailure> {
         let url = format!(
             "
             https://api.openweathermap.org/data/2.5/forecast?lat={}&lon={}&appid={}&units=metric",
