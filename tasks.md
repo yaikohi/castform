@@ -7,7 +7,7 @@
 - [ ] show castform in the style of the weather inside the CLI
 
 # Context
-## New name: Castform (from Pokemon)
+## New name: [Castform](https://bulbapedia.bulbagarden.net/wiki/Castform_(Pok%C3%A9mon)#Pok.C3.A9mon_GO) (from Pokemon)
 This pokemon changes shape based on the weather.
 
 # Splitting rust code into modules

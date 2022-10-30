@@ -1,10 +1,10 @@
 use dotenv::dotenv;
 use exitfailure::ExitFailure;
-use std::env;
-use chrono::Utc;
+use std::{env};
 
-
-use crate::utils::{get_coordinates::LocationResponse, tokens::load_token};
+use crate::utils::{
+    get_coordinates::LocationResponse, get_weather::WeatherResponse, tokens::load_token,
+};
 
 mod utils;
 
@@ -12,7 +12,9 @@ mod utils;
 async fn main() -> Result<(), ExitFailure> {
     dotenv().ok();
 
-    let current_time = Utc::now();
+    // let timestamp = chrono::offset::Utc::now().timestamp();
+    // dbg!(timestamp);
+
     let api_key_positionstack = load_token(String::from("API_TOKEN_POSITIONSTACK"));
     let api_key_openweathermap = load_token(String::from("API_TOKEN_OPENWEATHERMAP"));
 
@@ -20,18 +22,15 @@ async fn main() -> Result<(), ExitFailure> {
     let mut location_query: String = "Utrecht".to_string();
 
     if args.len() < 2 {
-        dbg!("args.len() < 2: {}", &args);
         println!("Since you didn't specify a location, it has defaulted to Utrecht.");
     } else if args.len() > 2 {
-        dbg!("else if: {}", &args);
         location_query = args[0].clone();
     } else {
-        dbg!("else: {}", &args);
-
         location_query = args[0].clone();
     }
 
-    let location_response = LocationResponse::get_lat_lon(&location_query, &api_key_positionstack).await?;
+    let location_response =
+        LocationResponse::get_lat_lon(&location_query, &api_key_positionstack).await?;
     println!(
         "{}'s lat: {:?}, lon: {:?}",
         location_query,
@@ -39,10 +38,19 @@ async fn main() -> Result<(), ExitFailure> {
         location_response[1].expect("Null value")
     );
 
-    let lat = location_response[0];
-    let lon = location_response[1];
+    let lat = location_response[0].expect("No lat found");
+    let lon = location_response[1].expect("No lon found");
 
-    // let weather_response = WeatherResponse::get(&lat, &lon, &api_key_openweathermap).await?;
+    let weather_response = WeatherResponse::get(
+        &lat.to_string(),
+        &lon.to_string(),
+        &api_key_openweathermap,
+    )
+    .await?;
 
+    let city = &weather_response.city.name;
+    dbg!(city);
+
+    println!("{:?}", weather_response.list[0]);
     Ok(())
 }

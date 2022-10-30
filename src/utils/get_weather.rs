@@ -1,64 +1,125 @@
+use exitfailure::ExitFailure;
+use reqwest::Url;
 use serde_derive::Deserialize;
 use serde_derive::Serialize;
-
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct WeatherResponse {
-    pub lat: Option<f64>,
-    pub lon: Option<f64>,
-    pub timezone: Option<String>,
-    #[serde(rename = "timezone_offset")]
-    pub timezone_offset: Option<i64>,
-    pub data: Vec<Weather>,
+    pub cod: String,
+    pub message: i64,
+    pub cnt: i64,
+    pub list: Vec<WeatherData>,
+    pub city: City,
+}
+
+#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub struct WeatherData {
+    pub dt: i64,
+    pub main: Main,
+    pub weather: Vec<Weather>,
+    pub clouds: Clouds,
+    pub wind: Wind,
+    pub visibility: i64,
+    pub pop: f64,
+    pub rain: Option<Rain>,
+    pub sys: Sys,
+    #[serde(rename = "dt_txt")]
+    pub dt_txt: String,
+}
+
+#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub struct Main {
+    pub temp: f64,
+    #[serde(rename = "feels_like")]
+    pub feels_like: f64,
+    #[serde(rename = "temp_min")]
+    pub temp_min: f64,
+    #[serde(rename = "temp_max")]
+    pub temp_max: f64,
+    pub pressure: i64,
+    #[serde(rename = "sea_level")]
+    pub sea_level: i64,
+    #[serde(rename = "grnd_level")]
+    pub grnd_level: i64,
+    pub humidity: i64,
+    #[serde(rename = "temp_kf")]
+    pub temp_kf: f64,
 }
 
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Weather {
-    pub dt: Option<i64>,
-    pub sunrise: Option<i64>,
-    pub sunset: Option<i64>,
-    pub temp: Option<f64>,
-    #[serde(rename = "feels_like")]
-    pub feels_like: Option<f64>,
-    pub pressure: Option<i64>,
-    pub humidity: Option<i64>,
-    #[serde(rename = "dew_point")]
-    pub dew_point: Option<f64>,
-    pub uvi: Option<f64>,
-    pub clouds: Option<i64>,
-    pub visibility: Option<i64>,
-    #[serde(rename = "wind_speed")]
-    pub wind_speed: Option<f64>,
-    #[serde(rename = "wind_deg")]
-    pub wind_deg: Option<i64>,
-    pub weather: Vec<WeatherDetails>,
+    pub id: i64,
+    pub main: String,
+    pub description: String,
+    pub icon: String,
 }
 
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
-pub struct WeatherDetails {
-    pub id: Option<i64>,
-    pub main: Option<String>,
-    pub description: Option<String>,
-    pub icon: Option<String>,
+pub struct Clouds {
+    pub all: i64,
 }
+
+#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub struct Wind {
+    pub speed: f64,
+    pub deg: i64,
+    pub gust: f64,
+}
+
+#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub struct Rain {
+    #[serde(rename = "3h")]
+    pub n3h: f64,
+}
+
+#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub struct Sys {
+    pub pod: String,
+}
+
+#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub struct City {
+    pub id: i64,
+    pub name: String,
+    pub coord: Coord,
+    pub country: String,
+    pub population: i64,
+    pub timezone: i64,
+    pub sunrise: i64,
+    pub sunset: i64,
+}
+
+#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub struct Coord {
+    pub lat: f64,
+    pub lon: f64,
+}
+
 
 impl WeatherResponse {
     pub async fn get(
         lat: &String,
         lon: &String,
-        time_stamp: &String,
         api_key: &String,
     ) -> Result<Self, ExitFailure> {
         let url = format!(
             "
-            http://api.openweathermap.org/data/3.0/onecall/timemachine?lat={}&lon={}&dt={}&appid={}",
-            lat, lon, time_stamp, api_key
+            https://api.openweathermap.org/data/2.5/forecast?lat={}&lon={}&appid={}&units=metric",
+            lat, lon, api_key
         );
 
         let url = Url::parse(&*url)?;
         let res = reqwest::get(url).await?.json().await?;
+        // print!("{:?}", &res);
 
         Ok(res)
     }
