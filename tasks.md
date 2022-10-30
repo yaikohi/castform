@@ -2,7 +2,7 @@
 # Tasks
 - [x] think of a new name that's not generic
 - [x] learn how to split rust code into smaller modules
-- [ ] fetch weather api data with lat/lon
+- [x] fetch weather api data with lat/lon
 - [ ] learn how to show pixelated pokemon inside of a cli
 - [ ] show castform in the style of the weather inside the CLI
 
