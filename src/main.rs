@@ -1,6 +1,6 @@
 use dotenv::dotenv;
 use exitfailure::ExitFailure;
-use std::{env};
+use std::env;
 
 use crate::utils::{
     get_coordinates::LocationResponse, get_weather::WeatherResponse, tokens::load_token,
