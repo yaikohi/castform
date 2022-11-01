@@ -12,9 +12,6 @@ mod utils;
 async fn main() -> Result<(), ExitFailure> {
     dotenv().ok();
 
-    // let timestamp = chrono::offset::Utc::now().timestamp();
-    // dbg!(timestamp);
-
     let api_key_positionstack = load_token(String::from("API_TOKEN_POSITIONSTACK"));
     let api_key_openweathermap = load_token(String::from("API_TOKEN_OPENWEATHERMAP"));
 
@@ -34,13 +31,6 @@ async fn main() -> Result<(), ExitFailure> {
 
     let location_response =
         LocationResponse::get_lat_lon(&location_query, &api_key_positionstack).await?;
-        // println!(
-        //     "{}'s lat: {:?}, lon: {:?}",
-        //     location_query,
-        //     location_response[0].expect("Null value"),
-        //     location_response[1].expect("Null value")
-        // );
-    
     let lat = location_response[0].expect("No lat found");
     let lon = location_response[1].expect("No lon found");
 
@@ -48,8 +38,10 @@ async fn main() -> Result<(), ExitFailure> {
         WeatherResponse::get(&lat.to_string(), &lon.to_string(), &api_key_openweathermap).await?;
 
     let city = &weather_response.city.name;
-    // dbg!(city);
 
-    println!("\n\nIn {} it's {:?} degrees celsius\n\n",city, weather_response.list[0].main.temp);
+    println!(
+        "\n\nIn {} it's {:?} degrees celsius\n\n",
+        city, weather_response.list[0].main.temp
+    );
     Ok(())
 }
