@@ -92,6 +92,21 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "ec8a7b6a70fde80372154c65702f00a0f56f3e1c36abbc6c440484be248856db"
 
 [[package]]
+name = "castform"
+version = "0.1.0"
+dependencies = [
+ "chrono",
+ "dotenv",
+ "exitfailure",
+ "reqwest",
+ "serde",
+ "serde_derive",
+ "serde_json",
+ "structopt",
+ "tokio",
+]
+
+[[package]]
 name = "cc"
 version = "1.0.74"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1329,21 +1344,6 @@ name = "wasm-bindgen-shared"
 version = "0.2.83"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "1c38c045535d93ec4f0b4defec448e4291638ee608530863b1e2ba115d4fff7f"
-
-[[package]]
-name = "weather-cli"
-version = "0.1.0"
-dependencies = [
- "chrono",
- "dotenv",
- "exitfailure",
- "reqwest",
- "serde",
- "serde_derive",
- "serde_json",
- "structopt",
- "tokio",
-]
 
 [[package]]
 name = "web-sys"

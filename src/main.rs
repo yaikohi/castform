@@ -21,6 +21,9 @@ async fn main() -> Result<(), ExitFailure> {
     let args: Vec<String> = env::args().collect();
     let mut location_query: String = "Utrecht".to_string();
 
+    // TODO: Refactor this part.
+    // - [ ] refactor to be more readable
+    // - [ ] refactor to be more intuitive for the CLI
     if args.len() < 2 {
         println!("Since you didn't specify a location, it has defaulted to Utrecht.");
     } else if args.len() > 2 {
@@ -31,13 +34,13 @@ async fn main() -> Result<(), ExitFailure> {
 
     let location_response =
         LocationResponse::get_lat_lon(&location_query, &api_key_positionstack).await?;
-    println!(
-        "{}'s lat: {:?}, lon: {:?}",
-        location_query,
-        location_response[0].expect("Null value"),
-        location_response[1].expect("Null value")
-    );
-
+        // println!(
+        //     "{}'s lat: {:?}, lon: {:?}",
+        //     location_query,
+        //     location_response[0].expect("Null value"),
+        //     location_response[1].expect("Null value")
+        // );
+    
     let lat = location_response[0].expect("No lat found");
     let lon = location_response[1].expect("No lon found");
 
@@ -45,8 +48,8 @@ async fn main() -> Result<(), ExitFailure> {
         WeatherResponse::get(&lat.to_string(), &lon.to_string(), &api_key_openweathermap).await?;
 
     let city = &weather_response.city.name;
-    dbg!(city);
+    // dbg!(city);
 
-    println!("{:?}", weather_response.list[0]);
+    println!("\n\nIn {} it's {:?} degrees celsius\n\n",city, weather_response.list[0].main.temp);
     Ok(())
 }
