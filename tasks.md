@@ -3,7 +3,18 @@
 - [x] think of a new name that's not generic
 - [x] learn how to split rust code into smaller modules
 - [x] fetch weather api data with lat/lon
+
+- [ ] use the users location as default behavior
+    - [ ] 
+- [ ] improve the CLI behavior
+    - create more interactive options:
+        - [ ] 'help' option `-h` / `--h` / `-help` / `--help`
+        - [ ] 'lat/lon=' option (?)
+        - [ ] 'location' option `-c={CITY_NAME}` / `--c={CITY_NAME}` or something like this
+        - [ ] ...?
+
 - [ ] learn how to show pixelated pokemon inside of a cli
+
 - [ ] show castform in the style of the weather inside the CLI
 
 # Context
@@ -24,8 +35,15 @@ I don't think people should use this CLI for making more than 10 calls a day and
 
 I used [tomorrow.io's blog](https://www.tomorrow.io/blog/top-8-weather-apis-for-2022/) for making this decision.
 
+# User's location
+
+
+# CLI Improvement
+## help `-h`
+Should show when no input is provided?
+
 # Displaying Pokemon inside of the terminal
-...WIP
+...WIP - might not be possible...
 
 Possible sources:
 [pokemon-icat](https://github.com/ph04/pokemon-icat)
